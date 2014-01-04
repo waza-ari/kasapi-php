@@ -10,7 +10,7 @@ $session_lifetime = 30 * 60; // lifetime for the KAS Session, maximum 30 minutes
 $session_update_lifetime = 'Y'; // Y means the auth token is refreshed on every request, N is contrary
 
 $session_name = 'sessid'; // name for the PHP session cookie
-$session_scope = '.example.com'; // scope in which the PHP session is valid (the dot . is for all sub-domains)
+$session_scope = ''; // scope in which the PHP session is valid (leave empty if you do not need it)
 
 // =======  Configuration end   =======
 

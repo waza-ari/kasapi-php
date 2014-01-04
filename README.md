@@ -46,16 +46,16 @@ Now I'll explain what each file in this repository is for:
 - `KasSoapClient.class.php`: We use the PHP `SoapClient` with WSDL to connect to the API. This class is for creating these clients.
 - `KasAuthToken.class.php`: This class takes care of authentication through a `SoapClient`.
 - `KasApi.class.php`: Finally, the most interesting class, which does the actual API calling based upon an array called `$functions`:
-  ```
-  private $functions = array(
-      'get_accountressources'   => array(),
-      'get_accounts'            => array('account_login:opt'),
-      ...
-      'get_traffic'             => array('year:opt', 'month:opt'),
-      'get_subdomains'          => array('subdomain_name:opt'),
-    );
-  ```
-  This array specifies which API functions you may call and which parameters to pass. The `:opt` suffix means that this parameter is optional and does not have to be specified.
+```
+private $functions = array(
+    'get_accountressources'   => array(),
+    'get_accounts'            => array('account_login:opt'),
+    [...]
+    'get_traffic'             => array('year:opt', 'month:opt'),
+    'get_subdomains'          => array('subdomain_name:opt'),
+  );
+```
+This array specifies which API functions you may call and which parameters to pass. The `:opt` suffix means that this parameter is optional and does not have to be specified.
 
 So if there's an entry
 

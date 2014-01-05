@@ -18,32 +18,45 @@ class KasApi {
   // contains all API functions and their parameters, adjust if the KAS API was updated
   /**
    * Contains every API function and its parameters.
-   * Adjust if the KAS API is updated; opt means optional parameter
+   * Adjust if the KAS API is updated; ! means required parameter
    *
    * @var array
    */
   private $functions = array(
-    'get_accountressources'   => array(), // sorry for the typo, All-Inkl's fault :)
-    'get_accounts'            => array('account_login:opt'),
-    'get_accountsettings'     => array(),
-    'get_server_information'  => array(),
-    'get_cronjobs'            => array('cronjob_id:opt'),
-    'get_databases'           => array('database_login:opt'),
-    'get_ddnsusers'           => array('ddns_login:opt'),
-    'get_directoryprotection' => array('directory_path:opt'),
-    'get_dns_settings'        => array('zone_host', 'nameserver:opt', 'record_id:opt'),
-    'get_domains'             => array('domain_name:opt'),
-    'get_topleveldomains'     => array(),
-    'get_ftpusers'            => array('ftp_login:opt'),
-    'get_mailaccounts'        => array('mail_login:opt'),
-    'get_mailstandardfilter'  => array(),
-    'get_mailforwards'        => array('mail_forward:opt'),
-    'get_mailinglists'        => array('mailinglist_name:opt'),
-    'get_sambausers'          => array('samba_login:opt'),
-    'get_softwareinstall'     => array('software_id:opt'),
-    'get_space'               => array('show_subaccounts:opt', 'show_details:opt'),
-    'get_traffic'             => array('year:opt', 'month:opt'),
-    'get_subdomains'          => array('subdomain_name:opt'),
+    'get_accountressources'   => '', // sorry for the typo, All-Inkl's fault :)
+    'get_accounts'            => 'account_login',
+    'get_accountsettings'     => '',
+    'get_server_information'  => '',
+    'get_cronjobs'            => 'cronjob_id',
+    'get_databases'           => 'database_login',
+    'get_ddnsusers'           => 'ddns_login',
+    'get_directoryprotection' => 'directory_path',
+    'get_dns_settings'        => 'zone_host!, nameserver, record_id',
+    'get_domains'             => 'domain_name',
+    'get_topleveldomains'     => '',
+    'get_ftpusers'            => 'ftp_login',
+    'get_mailaccounts'        => 'mail_login',
+    'get_mailstandardfilter'  => '',
+    'get_mailforwards'        => 'mail_forward',
+    'get_mailinglists'        => 'mailinglist_name',
+    'get_sambausers'          => 'samba_login',
+    'get_softwareinstall'     => 'software_id',
+    'get_space'               => 'show_subaccounts, show_details',
+    'get_traffic'             => 'year', 'month',
+    'get_subdomains'          => 'subdomain_name',
+    'add_account'             => 'account_kas_password!, account_ftp_password!, account_comment, account_contact_mail, hostname_art,
+                                  hostname_part1, hostname_part2, max_account, max_domain, max_subdomain, max_webspace, max_mail_account,
+                                  max_mail_forward, max_mailinglist, max_database, max_ftpuser, max_sambauser, max_cronjobs, inst_htaccess,
+                                  inst_fpse, kas_access_forbidden, inst_software, logging, dns_settings, show_password',
+    'add_cronjob'             => 'protocol!, http_url!, cronjob_comment!, minute!, hour!, day_of_month!, month!, day_of_week!, http_user,
+                                  http_password, mail_adress, mail_condition, is_active', // another typo D:
+    'add_database'            => 'database_password!, database_comment!',
+    'add_ddnsuser'            => 'dyndns_comment!, dyndns_password!, dyndns_zone!, dyndns_label!, dyndns_target_ip!',
+    'add_directoryprotection' => 'directory_user!, directory_path!, directory_password!, directory_authname!',
+    'add_dns_settings'        => 'zone_host!, nameserver, record_type!, record_name!, record_data!, record_aux!',
+    'add_domain'              => 'domain_name!, domain_tld!, domain_path, redirect_status, ssl_proxy, statistic_version, statistic_language',
+    'add_ftpuser'             => 'ftp_password!, ftp_comment!, ftp_path, ftp_permission_read, ftp_permission_write, ftp_permission_list,
+                                  ftp_virus_clamav',
   );
   
   /**
@@ -89,14 +102,14 @@ class KasApi {
   }
   
   /**
-   * Whether a parameter is optional
+   * Whether a parameter is required
    *
    * @param string $param 
    * @return boolean
    * @author Elias Kuiter
    */
-  private function paramIsOptional($param) {
-    return ends_with($param, ':opt') ? true : false;
+  private function paramIsRequired($param) {
+    return ends_with($param, '!') ? true : false;
   }
   
   /**
@@ -111,15 +124,33 @@ class KasApi {
   }
   
   /**
-   * Whether the parameter is optional or is in the given params
+   * Returns an array of allowed parameters for an API function
    *
-   * @param string $param 
-   * @param array $given_params 
-   * @return boolean
+   * @param string $function 
+   * @return void
    * @author Elias Kuiter
    */
-  private function containsParam($param, $given_params) {
-    return $this->paramIsOptional($param) || array_key_exists($param, $given_params);
+  private function allowedParams($function) {
+    $params = explode(',', $this->functions[$function]);
+    array_walk($params, create_function('&$val', '$val = trim($val);')); 
+    return $params;
+  }
+  
+  /**
+   * Returns an array of required parameters for an API function
+   *
+   * @param string $function 
+   * @return void
+   * @author Elias Kuiter
+   */
+  private function requiredParams($function) {
+    $params = explode(',', $this->functions[$function]);
+    array_walk($params, create_function('&$val', '$val = trim($val);'));
+    $required_params = array();
+    foreach ($params as $param)
+      if ($this->paramIsRequired($param))
+        $required_params[] = str_replace('!', '', $param);
+    return $required_params;
   }
   
   /**
@@ -131,8 +162,8 @@ class KasApi {
    * @author Elias Kuiter
    */
   private function paramIsAllowed($param, $function) {
-    $allowed_params = $this->functions[$function];
-    return in_array($param, $allowed_params) || in_array("$param:opt", $allowed_params);
+    $allowed_params = $this->allowedParams($function);
+    return in_array("$param!", $allowed_params) || in_array($param, $allowed_params);
   }
 
   /**
@@ -147,10 +178,10 @@ class KasApi {
   private function ensureFunctionParams($function, $given_params) {
     
     // ensure every required param is there
-    foreach ($this->functions[$function] as $param)
-      if (!$this->containsParam($param, $given_params))
+    $params = $this->requiredParams($function);
+    foreach ($params as $param)
+      if (!array_key_exists($param, $given_params))
         throw new KasApiException("API parameter '$param' not given");
-    
     // ensure every given param is allowed
     foreach ($given_params as $param => $value)
       if (!$this->paramIsAllowed($param, $function))

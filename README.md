@@ -49,20 +49,18 @@ Now I'll explain what each file in this repository is for:
 
 ```
 private $functions = array(
-    'get_accountressources'   => array(),
-    'get_accounts'            => array('account_login:opt'),
-    [...]
-    'get_traffic'             => array('year:opt', 'month:opt'),
-    'get_subdomains'          => array('subdomain_name:opt'),
-  );
+  [...]
+  'get_dns_settings'        => 'zone_host!, nameserver, record_id',
+  'get_domains'             => 'domain_name',
+  'get_topleveldomains'     => '',
+  'get_ftpusers'            => 'ftp_login',
+  'get_mailaccounts'        => 'mail_login',
+  [...]
+);
 ```
-This array specifies which API functions you may call and which parameters to pass. The `:opt` suffix means that this parameter is optional and does not have to be specified.
+This array specifies which API functions you may call and which parameters to pass. The `!` suffix means that this parameter is required and has to be specified (e.g. `zone_host!`), all other parameters are optional (e.g. `domain_name`).
 
-So if there's an entry
-```
-'get_dns_settings'        => array('zone_host', 'nameserver:opt', 'record_id:opt'),
-```
-a call like
+So if you look at `get_dns_settings` above, you see that a call like
 ```
 $api->get_dns_settings(array(
   'zone_host' => 'example.com.',

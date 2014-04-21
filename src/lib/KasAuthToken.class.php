@@ -98,7 +98,7 @@ class KasAuthToken {
    * @author Elias Kuiter
    */
   public function get() {
-    if ($this->loadAuth() && $this->authValid)
+    if ($this->loadAuth() && $this->authValid())
       return $this->loadAuth();
     $this->saveAuthExpires(time() + $this->kas_configuration->session_lifetime);
     return $this->saveAuth($this->fetch());

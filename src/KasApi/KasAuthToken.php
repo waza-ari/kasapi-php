@@ -1,7 +1,6 @@
 <?php
 
 namespace KasApi;
-namespace KasApi;
 
 /**
  * Fetches an Authentication token.
@@ -15,7 +14,7 @@ class KasAuthToken {
   /**
    * KasConfiguration object
    *
-   * @var object
+   * @var KasConfiguration $kas_configuration
    */
   private $kas_configuration;
   
@@ -78,7 +77,7 @@ class KasAuthToken {
    * @author Elias Kuiter
    */
   private function fetch() {
-    $client = (new KasAuthSoapClient($this->kas_configuration))->get();
+    $client = (new KasSoapClient($this->kas_configuration->wsdl_auth))->getInstance();
     return $client->KasAuth($this->kas_configuration->to_json());
   }
   

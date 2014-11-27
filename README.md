@@ -6,46 +6,46 @@ All-Inkl.com provides an API for automated access to all your accounts, settings
 This API is called the *KAS API*. To learn more about it, visit the official [KAS API Documentation](http://kasapi.kasserver.com/dokumentation/phpdoc/).
 There are also some [example forms](http://kasapi.kasserver.com/dokumentation/?open=beispiele) to try out.
 
-This is a PHP implementation of the API, though other programming languages are possible too; in fact every language in which you can issue SOAP requests.
+This is a PHP implementation of the API, which provides simple access to all functions provided by the API.
 
 ###Getting started
 
-To start using the KAS API for PHP, clone this repository (`git clone https://github.com/ekuiter/kasapi-php.git`) and take a look at `example.php`.
+The recommended installation method is to use composer. This software is available at Packagist.
+
+Just add the following line to the "require" section of your composer.json 
+
+```
+ "wazaari/kasapi-php": "<version>"
+```
+
+Alternatively you can clone the following GIT repository (`git clone https://github.com/wazaari/kasapi-php.git`).
 
 You only need to adjust a few settings for your needs:
 - `$kas_username`: insert your All-Inkl username here
 - `$kas_password`: and your All-Inkl password
 
-Read the explanations and make yourself familiar with the typical api call: `$api->get_domains();`
-So, to try it out, just remove some comments from the example API calls, upload the PHP files to your server and browse to `example.php`.
-
-Congratulations! You made your first steps with the KAS API.
+TODO: Include example of how to use it.
 
 ###A closer look
 
-Now, we will take a closer look at how this works. You don't have to read this if the given example calls serve your needs.
+Now, we will take a closer look at how this API works.
 
 Whenever you want to use the API, you need to create a KasConfiguration object first. This is done easily:
 ```
-$kas_configuration = new KasConfiguration($kas_username, $kas_password, $session_lifetime, $session_update_lifetime);
+$kasConfiguration = new KasConfiguration($kas_username, $kas_password, $session_lifetime, $session_update_lifetime);
 ```
-Username and password are self-explaining. The lifetime determines how long the API authentication lasts. It is specified in seconds, and may be maximal 30 minutes (1800 seconds). The update_lifetime is a boolean, noted as string ('Y' or 'N'), indicating whether the authentication refreshes on expiration. I recommend to set these values on 1800 and 'Y'.
+Username and password are self-explaining. The lifetime determines how long the API authentication is valid. It is specified in seconds, and may be maximal 30 minutes (1800 seconds). The parameter update_lifetime is a boolean, noted as string ('Y' or 'N'), indicating whether the authentication refreshes on expiration. I recommend to set these values on 1800 and 'Y'.
 
 Then you create an KasApi object to operate on:
 ```
-$api = new KasApi($kas_configuration);
+$kasApi = new KasApi($kas_configuration);
 ```
-On this object, you can call any API method specified in KasApi.class.php (more on this later):
+On this object, you can call any API method specified in the KAS documentation. Alternatively, you can have a look at the KasApi class.
 ```
 $api->get_databases();
 ```
-Now I'll explain what each file in this repository is for:
-- `examples.php`: You know this file already, it contains the first steps.
-- `kas.inc.php`: You need to `require_once` this file in your application. It also contains functions for exception and session handling.
-- `KasConfiguration.class.php`: This is a simple class that contains your configuration values.
-- `KasSoapClient.class.php`: We use the PHP `SoapClient` with WSDL to connect to the API. This class is for creating these clients.
-- `KasAuthToken.class.php`: This class takes care of authentication through a `SoapClient`.
-- `KasApi.class.php`: Finally, the most interesting class, which does the actual API calling based upon an array called `$functions`:
+
+Examples from the KasApi class might look like this
 
 ```
 private $functions = array(
@@ -69,12 +69,8 @@ $api->get_dns_settings(array(
 ```
 is perfectly valid. Notice we omitted the `nameserver` parameter, which is optional, but we included the `zone_host`, which is required in every case.
 
-(At the moment, this repository only supports the `get_xyz` API calls. This will change soon, and the `add`, `update` and `delete` calls will be implemented. You are free to add them yourself; in that case, please contribute your changes.)
-
-That's it! You now know how to use the API and how it works, so start writing an awesome application on top of this.
-
-Good luck, and please [give me feedback](mailto:info@elias-kuiter.de) if you have improvement suggestions!
+If you have any feedback, please provide it as comment or issue using GitHub and the URL above. I will recommend as soon as possible.
 
 ##Credits
 
-This work is based on previous work by info@elias-kuiter.de (https://github.com/ekuiter/kasapi-php) and has been extended by all current functions provided by the all-inkl API. Further, it has been changed to allow for composer integration.
+This work is partially based on previous work by info@elias-kuiter.de (https://github.com/ekuiter/kasapi-php) and has been extended by all current functions provided by the all-inkl API. Further, it has been streamlined, some errors and typos have been corrected, and it was changed to allow for composer integration.

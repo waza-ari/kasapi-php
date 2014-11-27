@@ -1,5 +1,7 @@
 <?php
 
+namespace KasApi;
+
 /**
  * Contains configuration values for the KAS API
  *
@@ -69,7 +71,7 @@ class KasConfiguration {
   }
   
   /**
-   * Array for use in KasAuthSoapClient class
+   * Array for use in KasSoapClient class
    *
    * @return array
    * @author Elias Kuiter

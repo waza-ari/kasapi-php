@@ -1,5 +1,7 @@
 <?php
 
+namespace KasApi;
+
 /**
  * Creates SoapClients for KAS Authentication and API
  *

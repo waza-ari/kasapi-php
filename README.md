@@ -74,3 +74,7 @@ is perfectly valid. Notice we omitted the `nameserver` parameter, which is optio
 That's it! You now know how to use the API and how it works, so start writing an awesome application on top of this.
 
 Good luck, and please [give me feedback](mailto:info@elias-kuiter.de) if you have improvement suggestions!
+
+##Credits
+
+This work is based on previous work by info@elias-kuiter.de (https://github.com/ekuiter/kasapi-php) and has been extended by all current functions provided by the all-inkl API. Further, it has been changed to allow for composer integration.

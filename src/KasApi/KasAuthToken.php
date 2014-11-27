@@ -1,5 +1,7 @@
 <?php
 
+namespace KasApi;
+
 /**
  * Fetches an Authentication token.
  * Makes use of a KAS configuration and of SOAP objects

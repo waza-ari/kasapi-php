@@ -1,5 +1,7 @@
 <?php
 
+namespace KasApi;
+
 /**
  * Calls the KAS API.
  * Ensures that the given API functions and parameters are valid
@@ -14,7 +16,7 @@ class KasApi {
    * @var object
    */
   private $kas_configuration;
-  
+
   // contains all API functions and their parameters, adjust if the KAS API was updated
   /**
    * Contains every API function and its parameters.
@@ -58,24 +60,24 @@ class KasApi {
     'add_ftpuser'             => 'ftp_password!, ftp_comment!, ftp_path, ftp_permission_read, ftp_permission_write, ftp_permission_list,
                                   ftp_virus_clamav',
   );
-  
+
   /**
    * Sets KasConfiguration
    *
-   * @param object $kas_configuration 
+   * @param object $kas_configuration
    * @author Elias Kuiter
    */
   function __construct($kas_configuration) {
     $this->kas_configuration = $kas_configuration;
   }
-  
+
   // calls a given API function (but does not validate the function name and parameters)
   // e.g.: KasApi::call('get_domains');
   /**
    * Calls an API function with parameters.
    * Does not validate function name or parameters
    *
-   * @param string $function 
+   * @param string $function
    * @param array $params
    * @return string
    * @author Elias Kuiter
@@ -93,53 +95,53 @@ class KasApi {
   /**
    * Whether an API function exists
    *
-   * @param string $function 
+   * @param string $function
    * @return boolean
    * @author Elias Kuiter
    */
   private function functionExists($function) {
     return array_key_exists($function, $this->functions) ? true : false;
   }
-  
+
   /**
    * Whether a parameter is required
    *
-   * @param string $param 
+   * @param string $param
    * @return boolean
    * @author Elias Kuiter
    */
   private function paramIsRequired($param) {
     return ends_with($param, '!') ? true : false;
   }
-  
+
   /**
    * Gets parameters from a function argument list
    *
-   * @param array $arguments 
+   * @param array $arguments
    * @return array
    * @author Elias Kuiter
    */
   private function getParamsFromArguments($arguments) {
     return $arguments[0] ? $arguments[0] : array();
   }
-  
+
   /**
    * Returns an array of allowed parameters for an API function
    *
-   * @param string $function 
+   * @param string $function
    * @return void
    * @author Elias Kuiter
    */
   private function allowedParams($function) {
     $params = explode(',', $this->functions[$function]);
-    array_walk($params, create_function('&$val', '$val = trim($val);')); 
+    array_walk($params, create_function('&$val', '$val = trim($val);'));
     return $params;
   }
-  
+
   /**
    * Returns an array of required parameters for an API function
    *
-   * @param string $function 
+   * @param string $function
    * @return void
    * @author Elias Kuiter
    */
@@ -152,12 +154,12 @@ class KasApi {
         $required_params[] = str_replace('!', '', $param);
     return $required_params;
   }
-  
+
   /**
    * Whether the given parameter is neither required nor optional
    *
-   * @param string $param 
-   * @param string $function 
+   * @param string $param
+   * @param string $function
    * @return boolean
    * @author Elias Kuiter
    */
@@ -170,13 +172,13 @@ class KasApi {
    * Ensures that the given parameters contain every required parameter.
    * Also ensures there are no unnecessary parameters
    *
-   * @param string $function 
-   * @param array $given_params 
+   * @param string $function
+   * @param array $given_params
    * @return void
    * @author Elias Kuiter
    */
   private function ensureFunctionParams($function, $given_params) {
-    
+
     // ensure every required param is there
     $params = $this->requiredParams($function);
     foreach ($params as $param)
@@ -186,16 +188,16 @@ class KasApi {
     foreach ($given_params as $param => $value)
       if (!$this->paramIsAllowed($param, $function))
         throw new KasApiException("API parameter '$param' may not be used");
-  }  
-  
+  }
+
   /**
    * Is called whenever an API call is requested, then validates and executes the call.
    * e.g.: KasApi::get_domains();
    * or: KasApi::get_dns_settings(array('zone_host' => 'example.com.'));
    * $functions describes which functions may be called and what params are valid
    *
-   * @param string $name 
-   * @param string $arguments 
+   * @param string $name
+   * @param string $arguments
    * @return void
    * @author Elias Kuiter
    */
@@ -208,11 +210,3 @@ class KasApi {
       throw new KasApiException("API function '$name' does not exist");
   }
 }
-
-/**
- * Exception for KAS API concerns
- *
- * @package default
- * @author Elias Kuiter
- */
-class KasApiException extends Exception {}

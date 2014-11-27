@@ -1,2 +1,3 @@
-myconf.php
-
+atlassian-ide-plugin.xml
+.idea
+.gitignore

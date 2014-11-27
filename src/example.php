@@ -1,6 +1,6 @@
 <?php
 
-require_once 'lib/kas.inc.php';
+require_once 'KasApi/kas.inc.php';
 
 // ======= Configuration values =======
 

@@ -111,7 +111,7 @@ class KasApi {
    * @author Elias Kuiter
    */
   private function paramIsRequired($param) {
-    return ends_with($param, '!') ? true : false;
+    return KasApiHelper::ends_with($param, '!') ? true : false;
   }
 
   /**

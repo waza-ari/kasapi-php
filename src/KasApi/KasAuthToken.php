@@ -1,6 +1,7 @@
 <?php
 
 namespace KasApi;
+namespace KasApi;
 
 /**
  * Fetches an Authentication token.

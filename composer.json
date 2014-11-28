@@ -1,0 +1,20 @@
+{
+    "name": "wazaari/kasapi-php",
+    "description": "Manage your All-Inkl account with the KAS API for PHP",
+    "keywords": ["all-inkl", "API", "KAS", "PHP", "WSDL"],
+    "homepage": "https://github.com/waza-ari/kasapi-php",
+    "license": "GPLv3",
+    "authors": [
+        {
+            "name": "Daniel Herrmann",
+            "email": "daniel.herrmann1@gmail.com"
+        },
+        {
+            "name": "Elias Kuiter",
+            "email": "info@elias-kuiter.de"
+        }
+    ],
+    "autoload": {
+        "psr-4": {"KasApi\\": "src/KasApi"}
+    }
+}

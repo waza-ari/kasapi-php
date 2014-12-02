@@ -120,8 +120,8 @@ class KasApi {
      */
     private function call($function, $params = array()) {
         $data = array('KasUser' => $this->kas_configuration->username,
-            'KasAuthType' => 'session',
-            'KasAuthData' => (new KasAuthToken($this->kas_configuration))->get(),
+            'KasAuthType' => $this->kas_configuration->_authType,
+            'KasAuthData' => $this->kas_configuration->_authData,
             'KasRequestType' => $function,
             'KasRequestParams' => $params);
         $client = (new KasSoapClient($this->kas_configuration->wsdl_api))->getInstance();
@@ -145,7 +145,7 @@ class KasApi {
      * @return boolean
      */
     private function paramIsRequired($param) {
-        return KasApiHelper::ends_with($param, '!') ? true : false;
+        return substr($param, -1) === "!" ? true : false;
     }
 
     /**

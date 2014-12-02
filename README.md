@@ -8,7 +8,7 @@ There are also some [example forms](http://kasapi.kasserver.com/dokumentation/?o
 
 This is a PHP implementation of the API, which provides simple access to all functions provided by the API.
 
-###Getting started
+###Installation
 
 The recommended installation method is to use composer. This software is available at Packagist.
 
@@ -20,23 +20,22 @@ Just add the following line to the "require" section of your composer.json
 
 Alternatively you can clone the following GIT repository (`git clone https://github.com/wazaari/kasapi-php.git`).
 
-You only need to adjust a few settings for your needs:
-- `$kas_username`: insert your All-Inkl username here
-- `$kas_password`: and your All-Inkl password
-
-TODO: Include example of how to use it.
-
-###A closer look
+###Usage
 
 Now, we will take a closer look at how this API works.
 
 Whenever you want to use the API, you need to create a KasConfiguration object first. This is done easily:
 ```
-$kasConfiguration = new KasConfiguration($kas_username, $kas_password, $session_lifetime, $session_update_lifetime);
+$kasConfiguration = new KasConfiguration($kas_username, $kas_auth_type, $kas_auth_data);
 ```
-Username and password are self-explaining. The lifetime determines how long the API authentication is valid. It is specified in seconds, and may be maximal 30 minutes (1800 seconds). The parameter update_lifetime is a boolean, noted as string ('Y' or 'N'), indicating whether the authentication refreshes on expiration. I recommend to set these values on 1800 and 'Y'.
+Username is quite self explaining. The KAS API allows for different types of authentication. Thus, you need to specify an authentication type and the corresponding authentication data, which could be a hashed password. Have a look at the documentation of all-incl to obtain a list of possible authentication methods.
 
-Then you create an KasApi object to operate on:
+As an example, assume you want to use "sha1" as authentication method. In this case, kas_auth_type simply would be "sha1", and kas_auth_data should be set to the sha1 hash of your KAS account. Assuming your username is "abcd1234" and your password is "password", the following line would create the correct credential object:
+```
+$kasConfiguration = new KasConfiguration("abcd1234", "sha1", sha1("password"));
+```
+
+This method allows you to authenticate against the KAS API without storing your plain password in a configuration file or database. Next, you need to create an KasApi object to operate on:
 ```
 $kasApi = new KasApi($kas_configuration);
 ```
@@ -69,7 +68,7 @@ $api->get_dns_settings(array(
 ```
 is perfectly valid. Notice we omitted the `nameserver` parameter, which is optional, but we included the `zone_host`, which is required in every case.
 
-If you have any feedback, please provide it as comment or issue using GitHub and the URL above. I will recommend as soon as possible.
+If you have any feedback, please provide it as comment or issue using GitHub and the URL above..
 
 ##Credits
 

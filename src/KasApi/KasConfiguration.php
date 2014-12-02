@@ -15,37 +15,21 @@ class KasConfiguration {
      *
      * @var string
      */
-    public $username;
+    public $_username;
 
     /**
-     * KAS password
+     * KAS Auth String
      *
      * @var string
      */
-    public $password;
+    public $_authData;
 
     /**
-     * Lifetime of a KAS session.
-     * maximum is 30 minutes
+     * Auth Type
      *
-     * @var string
+     * might be sha1
      */
-    public $session_lifetime;
-
-    /**
-     * Whether the KAS session should be renewed on every request.
-     * Y = token is refreshed on every request, N = contrary
-     *
-     * @var string
-     */
-    public $session_update_lifetime;
-
-    /**
-     * WSDL file for KAS Authentication
-     *
-     * @var string
-     */
-    public $wsdl_auth = 'https://kasapi.kasserver.com/soap/wsdl/KasAuth.wsdl';
+    public $_authType = "sha1";
 
     /**
      * WSDL file for KAS API
@@ -58,15 +42,12 @@ class KasConfiguration {
      * Creates a new Configuration object with the given parameters
      *
      * @param string $username
-     * @param string $password
-     * @param string $session_lifetime
-     * @param string $session_update_lifetime
-     * @author Elias Kuiter
+     * @param string $authData
+     * @param string $authType
      */
-    function __construct($username, $password, $session_lifetime, $session_update_lifetime) {
-        $this->username = $username;
-        $this->password = $password;
-        $this->session_lifetime = $session_lifetime;
-        $this->session_update_lifetime = $session_update_lifetime;
+    function __construct($username, $authData, $authType) {
+        $this->_username = $username;
+        $this->_authData = $authData;
+        $this->_authType = $authType;
     }
 }

@@ -84,9 +84,9 @@ class KasApi {
         'update_mailaccount' => 'mail_login!, mail_new_password, responder, mail_responder_content_type, mail_responder_displayname, responder_text, copy_adress, is_active, mail_sender_alias, mail_xlist_enabled, mail_xlist_sent, mail_xlist_drafts, mail_xlist_trash, mail_xlist_spam',
         'add_mailstandardfilter' => 'mail_login!, filter!',
         'delete_mailstandardfilter' => 'mail_login!',
-        'add_mailforward' => 'local_part!, domain_part!, target_N', //TODO: How to solve this in control logic?
+        'add_mailforward' => 'local_part!, domain_part!, target_N',
         'delete_mailforward' => 'mail_forward!',
-        'update_mailforward' => 'mail_forward!, target_N', //TODO: How to solve this in control logic?
+        'update_mailforward' => 'mail_forward!, target_N',
         'add_mailinglist' => 'mailinglist_name!, mailinglist_domain!, mailinglist_password',
         'delete_mailinglist' => 'mailinglist_name!',
         'update_mailinglist' => 'mailinglist_name!, subscriber, restrict_post, config, is_active',
@@ -119,7 +119,7 @@ class KasApi {
      * @return string
      */
     private function call($function, $params = array()) {
-        $data = array('KasUser' => $this->kas_configuration->username,
+        $data = array('KasUser' => $this->kas_configuration->_username,
             'KasAuthType' => $this->kas_configuration->_authType,
             'KasAuthData' => $this->kas_configuration->_authData,
             'KasRequestType' => $function,
@@ -166,8 +166,7 @@ class KasApi {
      */
     private function allowedParams($function) {
         $params = explode(',', $this->functions[$function]);
-        array_walk($params, create_function('&$val', '$val = trim($val);'));
-        return $params;
+        return array_map('trim', $params);
     }
 
     /**
@@ -177,8 +176,7 @@ class KasApi {
      * @return String[]
      */
     private function requiredParams($function) {
-        $params = explode(',', $this->functions[$function]);
-        array_walk($params, create_function('&$val', '$val = trim($val);'));
+        $params = array_map('trim', explode(',', $this->functions[$function]));
         $required_params = array();
         foreach ($params as $param)
             if ($this->paramIsRequired($param))
@@ -196,7 +194,7 @@ class KasApi {
      */
     private function paramIsAllowed($param, $function) {
         $allowed_params = $this->allowedParams($function);
-        return in_array("$param!", $allowed_params) || in_array($param, $allowed_params);
+        return in_array("$param!", $allowed_params) || in_array($param, $allowed_params) || (preg_match('/_[0-9]$/', $param) && in_array("target_N", $allowed_params) && strpos($param,'target_') !== false);
     }
 
     /**

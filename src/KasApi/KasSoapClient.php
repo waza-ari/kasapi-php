@@ -5,8 +5,7 @@ namespace KasApi;
 /**
  * Creates SoapClients for KAS Authentication and API
  *
- * @package default
- * @author Elias Kuiter
+ * @package KasApi
  */
 class KasSoapClient {
   

@@ -1,13 +1,13 @@
 <?php
 
 namespace KasApi;
+use SoapFault;
 
 /**
  * Calls the KAS API.
  * Ensures that the given API functions and parameters are valid
  *
- * @package default
- * @author Elias Kuiter
+ * @package KasApi
  */
 class KasApi {
     /**
@@ -15,7 +15,19 @@ class KasApi {
      *
      * @var KasConfiguration
      */
-    private $kas_configuration;
+    private $kasConfiguration;
+
+    /**
+     * @var String kasFloodDelay return value of last API call
+     */
+    private $kasFloodDelay;
+
+    /**
+     * @return String
+     */
+    public function getKasFloodDelay() {
+        return $this->kasFloodDelay;
+    }
 
     // contains all API functions and their parameters, adjust if the KAS API was updated
     /**
@@ -107,7 +119,7 @@ class KasApi {
      * @param object $kas_configuration
      */
     function __construct($kas_configuration) {
-        $this->kas_configuration = $kas_configuration;
+        $this->kasConfiguration = $kas_configuration;
     }
 
     /**
@@ -116,16 +128,24 @@ class KasApi {
      *
      * @param string $function
      * @param array $params
+     * @throws KasApiException
      * @return string
      */
     private function call($function, $params = array()) {
-        $data = array('KasUser' => $this->kas_configuration->_username,
-            'KasAuthType' => $this->kas_configuration->_authType,
-            'KasAuthData' => $this->kas_configuration->_authData,
-            'KasRequestType' => $function,
-            'KasRequestParams' => $params);
-        $client = (new KasSoapClient($this->kas_configuration->wsdl_api))->getInstance();
-        return $client->KasApi(json_encode($data))['Response']['ReturnInfo'];
+        try {
+            $data = array('KasUser' => $this->kasConfiguration->_username,
+                'KasAuthType' => $this->kasConfiguration->_authType,
+                'KasAuthData' => $this->kasConfiguration->_authData,
+                'KasRequestType' => $function,
+                'KasRequestParams' => $params);
+            $client = (new KasSoapClient($this->kasConfiguration->wsdl_api))->getInstance();
+            $result = $client->KasApi(json_encode($data));
+            $this->kasFloodDelay = $result['Response']['KasFloodDelay'];
+            return $result['Response']['ReturnInfo'];
+        } catch (SoapFault $fault) {
+            /** @noinspection PhpUndefinedFieldInspection */
+            throw new KasApiException('Unable to execute SOAP call '.$function.': '.$fault->faultstring, $fault->faultcode, $fault->faultstring, $fault->faultfactor, $fault->detail);
+        }
     }
 
     /**
@@ -190,7 +210,6 @@ class KasApi {
      * @param string $param
      * @param string $function
      * @return boolean
-     * @author Elias Kuiter
      */
     private function paramIsAllowed($param, $function) {
         $allowed_params = $this->allowedParams($function);
@@ -205,7 +224,6 @@ class KasApi {
      * @param array $given_params
      * @throws KasApiException
      * @return void
-     * @author Elias Kuiter
      */
     private function ensureFunctionParams($function, $given_params) {
 
@@ -230,7 +248,6 @@ class KasApi {
      * @param string $arguments
      * @throws KasApiException
      * @return Object
-     * @author Elias Kuiter
      */
     public function __call($name, $arguments) {
         if ($this->functionExists($name)) {

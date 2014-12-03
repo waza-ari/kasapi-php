@@ -5,8 +5,7 @@ namespace KasApi;
 /**
  * Contains configuration values for the KAS API
  *
- * @package default
- * @author Elias Kuiter
+ * @package KasApi
  */
 class KasConfiguration {
 

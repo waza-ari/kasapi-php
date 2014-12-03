@@ -143,8 +143,7 @@ class KasApi {
             $this->kasFloodDelay = $result['Response']['KasFloodDelay'];
             return $result['Response']['ReturnInfo'];
         } catch (SoapFault $fault) {
-            /** @noinspection PhpUndefinedFieldInspection */
-            throw new KasApiException('Unable to execute SOAP call '.$function.': '.$fault->faultstring, $fault->faultcode, $fault->faultstring, $fault->faultfactor, $fault->detail);
+            throw new KasApiException('Unable to execute SOAP call '.$function.': '.(isset($fault->faultstring) ? $fault->faultstring : ""), (isset($fault->faultcode) ? $fault->faultcode : ""), (isset($fault->faultstring) ? $fault->faultstring : ""), (isset($fault->faultfactor) ? $fault->faultfactor : ""), (isset($fault->detail) ? $fault->detail : ""));
         }
     }
 

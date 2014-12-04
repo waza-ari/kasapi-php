@@ -15,12 +15,12 @@ class KasApi {
      *
      * @var KasConfiguration
      */
-    private $kasConfiguration;
+    protected $kasConfiguration;
 
     /**
      * @var String kasFloodDelay return value of last API call
      */
-    private $kasFloodDelay;
+    protected $kasFloodDelay;
 
     /**
      * @return String
@@ -36,7 +36,7 @@ class KasApi {
      *
      * @var array
      */
-    private $functions = array(
+    protected $functions = array(
         'get_accountressources' => '', // sorry for the typo, All-Inkl's fault :)
         'get_accounts' => 'account_login',
         'get_accountsettings' => '',
@@ -131,7 +131,7 @@ class KasApi {
      * @throws KasApiException
      * @return string
      */
-    private function call($function, $params = array()) {
+    protected function call($function, $params = array()) {
         try {
             $data = array('KasUser' => $this->kasConfiguration->_username,
                 'KasAuthType' => $this->kasConfiguration->_authType,
@@ -153,7 +153,7 @@ class KasApi {
      * @param string $function
      * @return boolean
      */
-    private function functionExists($function) {
+    protected function functionExists($function) {
         return array_key_exists($function, $this->functions) ? true : false;
     }
 
@@ -163,7 +163,7 @@ class KasApi {
      * @param string $param
      * @return boolean
      */
-    private function paramIsRequired($param) {
+    protected function paramIsRequired($param) {
         return substr($param, -1) === "!" ? true : false;
     }
 
@@ -173,7 +173,7 @@ class KasApi {
      * @param array $arguments
      * @return array
      */
-    private function getParamsFromArguments($arguments) {
+    protected function getParamsFromArguments($arguments) {
         return $arguments[0] ? $arguments[0] : array();
     }
 
@@ -183,7 +183,7 @@ class KasApi {
      * @param string $function
      * @return string[]
      */
-    private function allowedParams($function) {
+    protected function allowedParams($function) {
         $params = explode(',', $this->functions[$function]);
         return array_map('trim', $params);
     }
@@ -194,7 +194,7 @@ class KasApi {
      * @param string $function
      * @return String[]
      */
-    private function requiredParams($function) {
+    protected function requiredParams($function) {
         $params = array_map('trim', explode(',', $this->functions[$function]));
         $required_params = array();
         foreach ($params as $param)
@@ -210,7 +210,7 @@ class KasApi {
      * @param string $function
      * @return boolean
      */
-    private function paramIsAllowed($param, $function) {
+    protected function paramIsAllowed($param, $function) {
         $allowed_params = $this->allowedParams($function);
         return in_array("$param!", $allowed_params) || in_array($param, $allowed_params) || (preg_match('/_[0-9]$/', $param) && in_array("target_N", $allowed_params) && strpos($param,'target_') !== false);
     }
@@ -224,7 +224,7 @@ class KasApi {
      * @throws KasApiException
      * @return void
      */
-    private function ensureFunctionParams($function, $given_params) {
+    protected function ensureFunctionParams($function, $given_params) {
 
         // ensure every required param is there
         $params = $this->requiredParams($function);

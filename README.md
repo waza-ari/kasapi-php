@@ -10,15 +10,15 @@ This is a PHP implementation of the API, which provides simple access to all fun
 
 ###Installation
 
-The recommended installation method is to use composer. This software is available at Packagist.
+The recommended installation method is to use Composer. This software is [available at Packagist](https://packagist.org/packages/wazaari/kasapi-php).
 
-Just add the following line to the "require" section of your composer.json 
+Just add the following line to the `require` section of your `composer.json`:
 
 ```
- "wazaari/kasapi-php": "<version>"
+ "wazaari/kasapi-php": "dev-master"
 ```
 
-Alternatively you can clone the following GIT repository (`git clone https://github.com/wazaari/kasapi-php.git`).
+Alternatively you can clone the following Git repository (`git clone https://github.com/waza-ari/kasapi-php.git`, see below).
 
 ###Usage
 
@@ -26,25 +26,25 @@ Now, we will take a closer look at how this API works.
 
 Whenever you want to use the API, you need to create a KasConfiguration object first. This is done easily:
 ```
-$kasConfiguration = new KasConfiguration($kas_username, $kas_auth_type, $kas_auth_data);
+$kasConfiguration = new KasConfiguration($username, $authData, $authType);
 ```
-Username is quite self explaining. The KAS API allows for different types of authentication. Thus, you need to specify an authentication type and the corresponding authentication data, which could be a hashed password. Have a look at the documentation of all-incl to obtain a list of possible authentication methods.
+`$username` is quite self explaining. The KAS API allows for different types of authentication. Thus, you need to specify an authentication type and the corresponding authentication data, which could be a hashed password. Have a look at the documentation of All-Inkl to obtain a list of possible authentication methods.
 
-As an example, assume you want to use "sha1" as authentication method. In this case, kas_auth_type simply would be "sha1", and kas_auth_data should be set to the sha1 hash of your KAS account. Assuming your username is "abcd1234" and your password is "password", the following line would create the correct credential object:
+As an example, assume you want to use `sha1` as authentication method. In this case, `$authType` simply would be `sha1`, and `$authData` should be set to the sha1 hash of your KAS account. Assuming your username is `abcd1234` and your password is `password`, the following line would create the correct credential object:
 ```
-$kasConfiguration = new KasConfiguration("abcd1234", "sha1", sha1("password"));
+$kasConfiguration = new KasConfiguration("abcd1234", sha1("password"), "sha1");
 ```
 
 This method allows you to authenticate against the KAS API without storing your plain password in a configuration file or database. Next, you need to create an KasApi object to operate on:
 ```
-$kasApi = new KasApi($kas_configuration);
+$kasApi = new KasApi($kasConfiguration);
 ```
-On this object, you can call any API method specified in the KAS documentation. Alternatively, you can have a look at the KasApi class.
+On this object, you can call any API method specified in the [KAS documentation](http://kasapi.kasserver.com/dokumentation/phpdoc/packages/API%20Funktionen.html). Alternatively, you can have a look at the KasApi class.
 ```
-$api->get_databases();
+$kasApi->get_databases();
 ```
 
-Examples from the KasApi class might look like this
+Examples from the KasApi class might look like this:
 
 ```
 private $functions = array(
@@ -61,15 +61,40 @@ This array specifies which API functions you may call and which parameters to pa
 
 So if you look at `get_dns_settings` above, you see that a call like
 ```
-$api->get_dns_settings(array(
+$kasApi->get_dns_settings(array(
   'zone_host' => 'example.com.',
   'record_id' => 123
 ));
 ```
 is perfectly valid. Notice we omitted the `nameserver` parameter, which is optional, but we included the `zone_host`, which is required in every case.
 
-If you have any feedback, please provide it as comment or issue using GitHub and the URL above..
+###Usage without Composer
+
+Here's an example of how to use the API if you just `git clone` this repository:
+(Place this file in the parent directory of the `src` directory.)
+```
+<?php
+namespace KasApi;
+foreach (glob("src/KasApi/*.php") as $filename) {
+    require_once $filename; // include kasapi-php
+}
+
+$kasConfiguration = new KasConfiguration("abcd1234", sha1("password"), "sha1");
+$kasApi = new KasApi($kasConfiguration);
+
+try {
+  $kasData = $kasApi->get_domains(); // any API function as described above
+  var_dump($kasData); // $kasData is a plain old PHP array
+} catch(KasApiException $e) {
+  echo $e->getMessage(); // show message on SOAP error
+}
+
+?>
+```
+If you have any feedback, please provide it as comment or issue using GitHub and the URL above.
 
 ##Credits
 
-This work is partially based on previous work by info@elias-kuiter.de (https://github.com/ekuiter/kasapi-php) and has been extended by all current functions provided by the all-inkl API. Further, it has been streamlined, some errors and typos have been corrected, and it was changed to allow for composer integration.
+[Elias Kuiter](https://github.com/ekuiter/) created `kasapi-php` to provide an easy way to access All-Inkl's public API.
+Credits go to [Daniel Herrmann](https://github.com/waza-ari/) as well for making big extensions to the API (such as streamlining the classes, correcting some errors and adding Composer integration).
+Note that the original repository ([ekuiter/kasapi-php](https://github.com/ekuiter/kasapi-php)) is now deprecated, use this repository instead.

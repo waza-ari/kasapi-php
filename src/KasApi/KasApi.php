@@ -174,7 +174,7 @@ class KasApi {
      * @return array
      */
     protected function getParamsFromArguments($arguments) {
-        return $arguments[0] ? $arguments[0] : array();
+        return isset($arguments[0]) ? $arguments[0] : array();
     }
 
     /**

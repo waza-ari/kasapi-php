@@ -93,6 +93,21 @@ try {
 ```
 If you have any feedback, please provide it as comment or issue using GitHub and the URL above.
 
+##Changelog
+
+#### Version 0.5
+
+* Starting from version 0.5, this project is now released under the [MIT license](http://opensource.org/licenses/MIT). A copy can also be found in this repository. Further, the former GPL license has been removed.
+
+#### Version 0.4
+
+* Minor fix to prevent a Warning while fetching parameters from arguments
+
+#### Version 0.3
+
+* Initial version of this library, created by [Elias Kuiter](https://github.com/ekuiter/) and extended by [Daniel Herrmann](https://github.com/waza-ari/).
+* Composer support was added.
+
 ##Credits
 
 [Elias Kuiter](https://github.com/ekuiter/) created `kasapi-php` to provide an easy way to access All-Inkl's public API.

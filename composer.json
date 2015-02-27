@@ -3,7 +3,7 @@
     "description": "Manage your All-Inkl account with the KAS API for PHP",
     "keywords": ["all-inkl", "API", "KAS", "PHP", "WSDL"],
     "homepage": "https://github.com/waza-ari/kasapi-php",
-    "license": "GPLv3",
+    "license": "MIT",
     "authors": [
         {
             "name": "Daniel Herrmann",

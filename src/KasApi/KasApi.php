@@ -212,7 +212,7 @@ class KasApi {
      */
     protected function paramIsAllowed($param, $function) {
         $allowed_params = $this->allowedParams($function);
-        return in_array("$param!", $allowed_params) || in_array($param, $allowed_params) || (preg_match('/_[0-9]$/', $param) && in_array("target_N", $allowed_params) && strpos($param,'target_') !== false);
+        return in_array("$param!", $allowed_params) || in_array($param, $allowed_params) || (preg_match('/_[0-9]+$/', $param) && in_array("target_N", $allowed_params) && strpos($param,'target_') !== false);
     }
 
     /**

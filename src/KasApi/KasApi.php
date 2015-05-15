@@ -138,7 +138,8 @@ class KasApi {
                 'KasAuthData' => $this->kasConfiguration->_authData,
                 'KasRequestType' => $function,
                 'KasRequestParams' => $params);
-            $client = (new KasSoapClient($this->kasConfiguration->wsdl_api))->getInstance();
+            $kasSoapClient = new KasSoapClient($this->kasConfiguration->wsdl_api);
+            $client = $kasSoapClient->getInstance();
             $result = $client->KasApi(json_encode($data));
             $this->kasFloodDelay = $result['Response']['KasFloodDelay'];
             return $result['Response']['ReturnInfo'];

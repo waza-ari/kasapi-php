@@ -26,18 +26,18 @@ Now, we will take a closer look at how this API works.
 
 Whenever you want to use the API, you need to create a KasConfiguration object first. This is done easily:
 ```
-$kasConfiguration = new KasConfiguration($username, $authData, $authType);
+$kasConfiguration = new KasApi\KasConfiguration($username, $authData, $authType);
 ```
 `$username` is quite self explaining. The KAS API allows for different types of authentication. Thus, you need to specify an authentication type and the corresponding authentication data, which could be a hashed password. Have a look at the documentation of All-Inkl to obtain a list of possible authentication methods.
 
 As an example, assume you want to use `sha1` as authentication method. In this case, `$authType` simply would be `sha1`, and `$authData` should be set to the sha1 hash of your KAS account. Assuming your username is `abcd1234` and your password is `password`, the following line would create the correct credential object:
 ```
-$kasConfiguration = new KasConfiguration("abcd1234", sha1("password"), "sha1");
+$kasConfiguration = new KasApi\KasConfiguration("abcd1234", sha1("password"), "sha1");
 ```
 
 This method allows you to authenticate against the KAS API without storing your plain password in a configuration file or database. Next, you need to create an KasApi object to operate on:
 ```
-$kasApi = new KasApi($kasConfiguration);
+$kasApi = new KasApi\KasApi($kasConfiguration);
 ```
 On this object, you can call any API method specified in the [KAS documentation](http://kasapi.kasserver.com/dokumentation/phpdoc/packages/API%20Funktionen.html). Alternatively, you can have a look at the KasApi class.
 ```

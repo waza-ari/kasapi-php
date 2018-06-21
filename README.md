@@ -1,6 +1,6 @@
-#kasapi-php
+# kasapi-php
 
-##Manage your All-Inkl account with the KAS API for PHP
+## Manage your All-Inkl account with the KAS API for PHP
 
 All-Inkl.com provides an API for automated access to all your accounts, settings, (sub-)domains, databases, cronjobs, mail accounts, ...
 This API is called the *KAS API*. To learn more about it, visit the official [KAS API Documentation](http://kasapi.kasserver.com/dokumentation/phpdoc/).
@@ -8,7 +8,7 @@ There are also some [example forms](http://kasapi.kasserver.com/dokumentation/?o
 
 This is a PHP implementation of the API, which provides simple access to all functions provided by the API.
 
-###Installation
+### Installation
 
 The recommended installation method is to use Composer. This software is [available at Packagist](https://packagist.org/packages/wazaari/kasapi-php).
 
@@ -20,7 +20,7 @@ Just add the following line to the `require` section of your `composer.json`:
 
 Alternatively you can clone the following Git repository (`git clone https://github.com/waza-ari/kasapi-php.git`, see below).
 
-###Usage
+### Usage
 
 Now, we will take a closer look at how this API works.
 
@@ -68,7 +68,7 @@ $kasApi->get_dns_settings(array(
 ```
 is perfectly valid. Notice we omitted the `nameserver` parameter, which is optional, but we included the `zone_host`, which is required in every case.
 
-###Usage without Composer
+### Usage without Composer
 
 Here's an example of how to use the API if you just `git clone` this repository:
 (Place this file in the parent directory of the `src` directory.)
@@ -93,7 +93,7 @@ try {
 ```
 If you have any feedback, please provide it as comment or issue using GitHub and the URL above.
 
-##Changelog
+## Changelog
 
 #### Version 0.5
 
@@ -108,7 +108,7 @@ If you have any feedback, please provide it as comment or issue using GitHub and
 * Initial version of this library, created by [Elias Kuiter](https://github.com/ekuiter/) and extended by [Daniel Herrmann](https://github.com/waza-ari/).
 * Composer support was added.
 
-##Credits
+## Credits
 
 [Elias Kuiter](https://github.com/ekuiter/) created `kasapi-php` to provide an easy way to access All-Inkl's public API.
 Credits go to [Daniel Herrmann](https://github.com/waza-ari/) as well for making big extensions to the API (such as streamlining the classes, correcting some errors and adding Composer integration).

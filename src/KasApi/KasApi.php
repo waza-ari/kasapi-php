@@ -111,7 +111,7 @@ class KasApi {
         'add_subdomain' => 'subdomain_name!, domain_name!, subdomain_path, redirect_status, ssl_proxy, statistic_version, statistic_language, php_version',
         'delete_subdomain' => 'subdomain_name!',
         'update_subdomain' => 'subdomain_name!, subdomain_path, redirect_status, ssl_proxy, statistic_version, statistic_language, php_version',
-        'update_ssl' => 'ssl_certificate_sni_key!, ssl_certificate_sni_crt!, ssl_certificate_is_active, ssl_certificate_sni_csr, ssl_certificate_sni_bundle',
+        'update_ssl' => 'hostname!, ssl_certificate_sni_key!, ssl_certificate_sni_crt!, ssl_certificate_is_active, ssl_certificate_sni_csr, ssl_certificate_sni_bundle',
         'add_symlink' => 'symlink_target!, symlink_name!',
     );
 

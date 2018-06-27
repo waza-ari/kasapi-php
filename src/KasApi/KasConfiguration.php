@@ -30,6 +30,13 @@ class KasConfiguration {
      */
     public $_authType = "sha1";
 
+	/**
+	 * Automatic Delay for Api Calls
+	 *
+	 * Manages whether KasApi should use sleep to automagically manage kasFloodDelay
+	 */
+	public $_autoDelayApiCalls;
+
     /**
      * WSDL file for KAS API
      *
@@ -43,10 +50,12 @@ class KasConfiguration {
      * @param string $username
      * @param string $authData
      * @param string $authType
+     * @param bool $autoDelayApiCalls
      */
-    function __construct($username, $authData, $authType) {
+    function __construct($username, $authData, $authType, $autoDelayApiCalls = false) {
         $this->_username = $username;
         $this->_authData = $authData;
         $this->_authType = $authType;
+        $this->_autoDelayApiCalls = $autoDelayApiCalls;
     }
 }

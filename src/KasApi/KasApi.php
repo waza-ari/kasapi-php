@@ -94,6 +94,11 @@ class KasApi {
      */
     protected $kasFloodDelay;
 
+	/**
+	 * @var int $nextCallTimestamp Timestamp of when the next api call is allowed
+	 */
+    protected $nextCallTimestamp = 0;
+
     /**
      * @return String
      */
@@ -207,6 +212,9 @@ class KasApi {
      */
     protected function call($function, $params = array()) {
         try {
+        	if ($this->kasConfiguration->_autoDelayApiCalls && ($now = time()) < $this->nextCallTimestamp) {
+        		sleep($this->nextCallTimestamp - $now);
+	        }
             $data = array('KasUser' => $this->kasConfiguration->_username,
                 'KasAuthType' => $this->kasConfiguration->_authType,
                 'KasAuthData' => $this->kasConfiguration->_authData,
@@ -216,6 +224,7 @@ class KasApi {
             $client = $kasSoapClient->getInstance();
             $result = $client->KasApi(json_encode($data));
             $this->kasFloodDelay = $result['Response']['KasFloodDelay'];
+            $this->nextCallTimestamp = time() + (int)$this->kasFloodDelay;
             return $result['Response']['ReturnInfo'];
         } catch (SoapFault $fault) {
             throw new KasApiException('Unable to execute SOAP call '.$function.': '.(isset($fault->faultstring) ? $fault->faultstring : ""), (isset($fault->faultcode) ? $fault->faultcode : ""), (isset($fault->faultstring) ? $fault->faultstring : ""), (isset($fault->faultfactor) ? $fault->faultfactor : ""), (isset($fault->detail) ? $fault->detail : ""));

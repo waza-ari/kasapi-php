@@ -16,5 +16,8 @@
     ],
     "autoload": {
         "psr-4": {"KasApi\\": "src/KasApi"}
+    },
+    "require": {
+        "ext-soap": "*"
     }
 }

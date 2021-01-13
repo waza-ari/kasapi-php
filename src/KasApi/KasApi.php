@@ -142,7 +142,7 @@ class KasApi {
                                   inst_fpse, kas_access_forbidden, inst_software, logging, dns_settings, show_password',
         'add_cronjob' => 'protocol!, http_url!, cronjob_comment!, minute!, hour!, day_of_month!, month!, day_of_week!, http_user,
                                   http_password, mail_adress, mail_condition, is_active', // another typo D:
-        'add_database' => 'database_password!, database_comment!',
+        'add_database' => 'database_password!, database_comment!, database_allowed_hosts',
         'add_ddnsuser' => 'dyndns_comment!, dyndns_password!, dyndns_zone!, dyndns_label!, dyndns_target_ip!',
         'add_directoryprotection' => 'directory_user!, directory_path!, directory_password!, directory_authname!',
         'add_dns_settings' => 'zone_host!, nameserver, record_type!, record_name!, record_data!, record_aux!',
@@ -157,7 +157,7 @@ class KasApi {
         'delete_cronjob' => 'cronjob_id!',
         'update_cronjob' => 'cronjob_id!, protocol, http_url, cronjob_comment, minute, hour, day_of_month, month, day_of_week, http_user, http_password, mail_adress, mail_condition, is_active',
         'delete_database' => 'database_login!',
-        'update_database' => 'database_login!, database_new_password, database_comment',
+        'update_database' => 'database_login!, database_new_password, database_comment, database_allowed_hosts',
         'delete_ddnsuser' => 'dyndns_login!',
         'update_ddnsuser' => 'dyndns_login!, dyndns_password, dyndns_comment',
         'delete_directoryprotection' => 'directory_user!, directory_path!',

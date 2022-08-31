@@ -26,9 +26,9 @@ class KasConfiguration {
     /**
      * Auth Type
      *
-     * might be sha1
+     * might be plain
      */
-    public $_authType = "sha1";
+    public $_authType = "plain";
 
 	/**
 	 * Automatic Delay for Api Calls

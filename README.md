@@ -30,12 +30,12 @@ $kasConfiguration = new KasApi\KasConfiguration($username, $authData, $authType)
 ```
 `$username` is quite self explaining. The KAS API allows for different types of authentication. Thus, you need to specify an authentication type and the corresponding authentication data, which could be a hashed password. Have a look at the documentation of All-Inkl to obtain a list of possible authentication methods.
 
-As an example, assume you want to use `sha1` as authentication method. In this case, `$authType` simply would be `sha1`, and `$authData` should be set to the sha1 hash of your KAS account. Assuming your username is `abcd1234` and your password is `password`, the following line would create the correct credential object:
+As an example, assume you want to use `plain` as authentication method. In this case, `$authType` simply would be `plain`, and `$authData` should be set to the plain Passwort of your KAS account. Assuming your username is `abcd1234` and your password is `password`, the following line would create the correct credential object:
 ```
-$kasConfiguration = new KasApi\KasConfiguration("abcd1234", sha1("password"), "sha1");
+$kasConfiguration = new KasApi\KasConfiguration("abcd1234", "password", "plain");
 ```
 
-This method allows you to authenticate against the KAS API without storing your plain password in a configuration file or database. Next, you need to create an KasApi object to operate on:
+Next, you need to create an KasApi object to operate on:
 ```
 $kasApi = new KasApi\KasApi($kasConfiguration);
 ```
@@ -79,7 +79,7 @@ foreach (glob("src/KasApi/*.php") as $filename) {
     require_once $filename; // include kasapi-php
 }
 
-$kasConfiguration = new KasConfiguration("abcd1234", sha1("password"), "sha1");
+$kasConfiguration = new KasConfiguration("abcd1234", "password", "plain");
 $kasApi = new KasApi($kasConfiguration);
 
 try {

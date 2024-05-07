@@ -183,7 +183,7 @@ class KasApi {
         'add_sambauser' => 'samba_path!, samba_new_password!, samba_comment',
         'delete_sambauser' => 'samba_login!',
         'update_sambauser' => 'samba_login!, samba_path, samba_new_password, samba_comment',
-        'add_session' => 'session_lifetime!, session_update_lifetime!',
+        'add_session' => 'session_lifetime!, session_update_lifetime!, session_2fa',
         'add_softwareinstall' => 'software_id!, software_database!, software_hostname!, software_path!, software_admin_mail!, software_admin_user, software_admin_pass, language, software_team',
         'add_subdomain' => 'subdomain_name!, domain_name!, subdomain_path, redirect_status, ssl_proxy, statistic_version, statistic_language, php_version',
         'delete_subdomain' => 'subdomain_name!',
